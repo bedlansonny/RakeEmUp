@@ -15,9 +15,18 @@ public class Tree
         piles = new HashMap<>();
     }
 
+    public void fill()
+    {
+        Node root = new Node(0, leafCounts[0]);
+        visit(root);
+    }
+
     public void visit(Node parent)
     {
-        piles.put(parent.pos, leafCounts[currentInd]);
+        int init = 0;
+        if(piles.get(parent.pos) != null)
+            init = piles.get(parent.pos);
+        piles.put(parent.pos, init + leafCounts[currentInd]);
         leftNode(parent);
         rightNode(parent);
     }
@@ -41,11 +50,25 @@ public class Tree
         visit(parent.right);
     }
 
-    public String pilesOutput
+    public String pilesOutput()
     {
-        String output = "";
-    }
+        int lowest = 0;
+        for(Integer index : piles.keySet())
+        {
+            if(index < lowest)
+                lowest = index;
+        }
 
+        String output = "";
+        int i = lowest;
+        while(piles.containsKey(i))
+        {
+            output += piles.get(i) + " ";
+            i++;
+        }
+
+        return output;
+    }
 
     public class Node
     {
